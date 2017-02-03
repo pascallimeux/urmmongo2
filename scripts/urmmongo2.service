@@ -1,0 +1,11 @@
+[Unit]
+Description=UrmMongo Service  
+After=docker.service  
+Requires=docker.service
+
+[Service]
+ExecStart=/bin/sh -c "/data/urmmongo/dist/start_urmmongo.sh"
+ExecStop=/bin/sh -c "/data/urmmongo/dist/stop_urmmongo.sh"
+
+[Install]
+WantedBy=multi-user.target

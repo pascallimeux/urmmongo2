@@ -1,0 +1,11 @@
+{
+	"logger":"Trace",
+	"logFileName":"/var/log/mhealth-urm-mongo/urmmongodbtests.log",
+    "mongoUrl":"mongodb://localhost",
+    "mongoDbName":"MHT2015DBTEST",
+    "httpHostUrl":"localhost:8088",
+    "readTimeout":5,
+	"writeTimeout":10,
+	"handlerTimeout":12,
+    "control":false
+}
