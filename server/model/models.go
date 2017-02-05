@@ -16,7 +16,7 @@ package model
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/pascallimeux/urmmongo/utils/log"
+	"github.com/pascallimeux/urmmongo2/utils/log"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"time"

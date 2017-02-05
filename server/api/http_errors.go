@@ -14,7 +14,7 @@ limitations under the License.
 package api
 
 import (
-	"github.com/pascallimeux/urmmongo/utils/log"
+	"github.com/pascallimeux/urmmongo2/utils/log"
 	"net/http"
 	"strings"
 )

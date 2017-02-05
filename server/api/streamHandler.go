@@ -16,23 +16,24 @@ package api
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/pascallimeux/urmmongo/server/model"
-	"github.com/pascallimeux/urmmongo/utils/log"
+	"github.com/pascallimeux/urmmongo2/server/model"
+	"github.com/pascallimeux/urmmongo2/utils/log"
 	"net/http"
 )
 
-//HTTP Get - /datasources
-func (a *AppContext) getDatasourcesHandler(w http.ResponseWriter, r *http.Request) {
-	log.Trace(log.Here(), "GetDatasourcesHandler() : calling method -")
-	var datasources []model.DataSource
+//HTTP Get - /datasources/{ds_id}/streams
+func (a *AppContext) getStreamsHandler(w http.ResponseWriter, r *http.Request) {
+	log.Trace(log.Here(), "GetStreamsHandler() : calling method -")
+	var streams []model.Stream
 	var err error
-	var j []byte
-	datasources, err = a.Mongo.Get_datasources()
+	vars := mux.Vars(r)
+	ds_id := vars["ds_id"]
+	streams, err = a.Mongo.Get_streams(ds_id)
 	if err != nil {
 		sendError(log.Here(), w, err)
 		return
 	}
-	j, err = json.Marshal(datasources)
+	j, err := json.Marshal(streams)
 	if err != nil {
 		sendError(log.Here(), w, err)
 		return
@@ -42,21 +43,23 @@ func (a *AppContext) getDatasourcesHandler(w http.ResponseWriter, r *http.Reques
 	w.Write(j)
 }
 
-//HTTP Post - /datasources
-func (a *AppContext) postDatasourceHandler(w http.ResponseWriter, r *http.Request) {
-	log.Trace(log.Here(), "PostDatasourceHandler() : calling method -")
-	var datasource model.DataSource
-	err := json.NewDecoder(r.Body).Decode(&datasource)
+//HTTP Post - /datasources/{ds_id}/streams
+func (a *AppContext) postStreamHandler(w http.ResponseWriter, r *http.Request) {
+	log.Trace(log.Here(), "PostStreamHandler() : calling method -")
+	var stream model.Stream
+	vars := mux.Vars(r)
+	ds_id := vars["ds_id"]
+	err := json.NewDecoder(r.Body).Decode(&stream)
 	if err != nil {
 		sendError(log.Here(), w, err)
 		return
 	}
-	err = a.Mongo.Create_datasource(&datasource)
+	err = a.Mongo.Create_stream(ds_id, &stream)
 	if err != nil {
 		sendError(log.Here(), w, err)
 		return
 	}
-	j, err := json.Marshal(datasource)
+	j, err := json.Marshal(stream)
 	if err != nil {
 		sendError(log.Here(), w, err)
 		return
@@ -66,19 +69,20 @@ func (a *AppContext) postDatasourceHandler(w http.ResponseWriter, r *http.Reques
 	w.Write(j)
 }
 
-//HTTP Get - /datasources/{ds_id}
-func (a *AppContext) getDatasourceHandler(w http.ResponseWriter, r *http.Request) {
-	log.Trace(log.Here(), "GetDatasourceHandler() : calling method -")
-	var datasource model.DataSource
-	var err error
+//HTTP Get - /datasources/{ds_id}/streams/{st_id}
+func (a *AppContext) getStreamHandler(w http.ResponseWriter, r *http.Request) {
+	log.Trace(log.Here(), "GetStreamHandler() : calling method -")
+	var stream model.Stream
 	vars := mux.Vars(r)
+	var err error
 	ds_id := vars["ds_id"]
-	datasource, err = a.Mongo.Get_datasource(ds_id)
+	st_id := vars["st_id"]
+	stream, err = a.Mongo.Get_stream(ds_id, st_id)
 	if err != nil {
 		sendError(log.Here(), w, err)
 		return
 	}
-	j, err := json.Marshal(datasource)
+	j, err := json.Marshal(stream)
 	if err != nil {
 		sendError(log.Here(), w, err)
 		return

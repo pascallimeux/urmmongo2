@@ -15,8 +15,8 @@ package model
 
 import (
 	"errors"
-	"github.com/pascallimeux/urmmongo/utils"
-	"github.com/pascallimeux/urmmongo/utils/log"
+	"github.com/pascallimeux/urmmongo2/utils"
+	"github.com/pascallimeux/urmmongo2/utils/log"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"strconv"

@@ -14,7 +14,7 @@ limitations under the License.
 package utils
 
 import (
-	"github.com/pascallimeux/urmmongo/utils/log"
+	"github.com/pascallimeux/urmmongo2/utils/log"
 	"time"
 )
 

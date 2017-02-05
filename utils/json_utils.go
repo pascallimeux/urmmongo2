@@ -16,7 +16,7 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/pascallimeux/urmmongo/utils/log"
+	"github.com/pascallimeux/urmmongo2/utils/log"
 	"io/ioutil"
 	"regexp"
 	"strings"

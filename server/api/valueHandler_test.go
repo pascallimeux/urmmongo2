@@ -11,7 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package tests
+package api
 
 import (
 	"io/ioutil"
@@ -29,7 +29,7 @@ func TestValueCreateNominal(t *testing.T) {
 }
 
 func TestValueGetAllNominal(t *testing.T) {
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datestr := "2016-12-09T08:41:30+02:00"
@@ -45,7 +45,7 @@ func TestValueGetAllNominal(t *testing.T) {
 }
 
 func TestValueGetForAdayNominal(t *testing.T) {
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datestr := "2016-12-10T08:41:32+02:00"
@@ -61,7 +61,7 @@ func TestValueGetForAdayNominal(t *testing.T) {
 }
 
 func TestValueGetWithDateFromNominal(t *testing.T) {
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datestr := "2016-12-05T09:41:30+02:00"
@@ -78,7 +78,7 @@ func TestValueGetWithDateFromNominal(t *testing.T) {
 }
 
 func TestValueGetWithDateToNominal(t *testing.T) {
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datestr := "2016-12-05T09:41:30+02:00"
@@ -95,7 +95,7 @@ func TestValueGetWithDateToNominal(t *testing.T) {
 }
 
 func TestValueGetWithPeriodNominal(t *testing.T) {
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datestr := "2016-12-10T09:41:30+02:00"
@@ -112,7 +112,7 @@ func TestValueGetWithPeriodNominal(t *testing.T) {
 }
 
 func TestValueGetWithIntervalBetweenValuesNominal(t *testing.T) {
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datestr := "2016-12-08T09:41:00+02:00"
@@ -129,8 +129,8 @@ func TestValueGetWithIntervalBetweenValuesNominal(t *testing.T) {
 }
 
 func TestValueGetBadStID(t *testing.T) {
-	AppContext.Mongo.Control = true
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	AppCTX.Mongo.Control = true
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := "584bd567749b1421462bf9a0"
 	res, err := http.Get(httpServerTest.URL + "/datasources/" + datasourceId + "/streams/" + streamId + "/values/")
@@ -146,8 +146,8 @@ func TestValueGetBadStID(t *testing.T) {
 }
 
 func TestValueGetBadDsID(t *testing.T) {
-	AppContext.Mongo.Control = true
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	AppCTX.Mongo.Control = true
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := "584bd567759b1421472bf9a0"
 	streamId := "584bd567749b1421462bf9a0"
 	res, err := http.Get(httpServerTest.URL + "/datasources/" + datasourceId + "/streams/" + streamId + "/values/")
@@ -163,7 +163,7 @@ func TestValueGetBadDsID(t *testing.T) {
 }
 
 func TestValueCreateBadStID(t *testing.T) {
-	AppContext.Mongo.Control = true
+	AppCTX.Mongo.Control = true
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := "222222222222222222222222"
 	datestr := "2016-12-09T08:41:24+02:00"
@@ -182,7 +182,7 @@ func TestValueCreateBadStID(t *testing.T) {
 }
 
 func TestValueCreateBadDsID(t *testing.T) {
-	AppContext.Mongo.Control = true
+	AppCTX.Mongo.Control = true
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datasourceId = "333333333333333333333333"
@@ -202,7 +202,7 @@ func TestValueCreateBadDsID(t *testing.T) {
 }
 
 func TestValueCreateWithNewStID(t *testing.T) {
-	AppContext.Mongo.Control = false
+	AppCTX.Mongo.Control = false
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := "584bd567749b1421462bf9a0"
 	datestr := "2016-12-09T08:41:24+02:00"
@@ -210,7 +210,7 @@ func TestValueCreateWithNewStID(t *testing.T) {
 }
 
 func TestValueCreateWithNewDtID(t *testing.T) {
-	AppContext.Mongo.Control = false
+	AppCTX.Mongo.Control = false
 	datasourceId := "584bf567759b1421472bf9a0"
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datestr := "2016-12-09T08:41:24+02:00"
@@ -218,7 +218,7 @@ func TestValueCreateWithNewDtID(t *testing.T) {
 }
 
 func TestValueCreateWithNewStAndDtID(t *testing.T) {
-	AppContext.Mongo.Control = false
+	AppCTX.Mongo.Control = false
 	datasourceId := "584bd567749b1445462bf9a0"
 	streamId := "584bd567349b1421462bf9a0"
 	datestr := "2016-12-09T08:41:24+02:00"

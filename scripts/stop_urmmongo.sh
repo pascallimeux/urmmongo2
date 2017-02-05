@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Stop urmmongo2"
 PID=`pidof urmmongo`
 if [ -n "$PID" ]
 then

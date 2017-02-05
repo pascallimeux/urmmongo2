@@ -1,9 +1,9 @@
 {
    "logger":"Info",
-    "logFileName":"/var/log/mhealth-urm-mongo/urmmongodb.log",
+    "logFileName":"/data/urmmongo2/dist/logs/urmmongodb.log",
     "mongoUrl":"mongodb://localhost",
     "mongoDbName":"MHT2015DBBIS",
-    "httpHostUrl":"10.194.18.46:8088",
+    "httpHostUrl":"192.168.20.94:8088",
     "readTimeout":5,
     "writeTimeout":10,
     "handlerTimeout":12,

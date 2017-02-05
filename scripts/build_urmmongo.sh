@@ -1,13 +1,16 @@
 #!/bin/bash
-echo "Build urmmongo"
-SRCPATH="$GOPATH/src/github.com/pascallimeux/urmmongo"
-SRCBIN="/data/urmmongo/dist"
+echo "Build urmmongo2"
+. env.sh
 
-go build -ldflags "-s" $SRCPATH/server/urmmongo.go
+go build -ldflags "-s" $SRCPATH/urmmongo.go
+
 if [ ! -d "$SRCBIN" ]; then
-  mkdir $SRCBIN
+  sudo mkdir -p $SRCBIN
+  sudo chown -R $USER $DATAREPO
 fi
+
 mv urmmongo $SRCBIN/urmmongo
-cp $SRCPATH/server/config/config.json $SRCBIN/config.json
+cp $SRCPATH/config.json $SRCBIN/config.json
 cp *.sh $SRCBIN
 chmod u+x $SRCBIN/*.sh
+

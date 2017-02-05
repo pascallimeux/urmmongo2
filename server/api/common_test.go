@@ -11,14 +11,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package tests
+package api
 
 import (
 	"encoding/json"
-	"github.com/pascallimeux/urmmongo/server/api"
-	"github.com/pascallimeux/urmmongo/server/model"
-	"github.com/pascallimeux/urmmongo/utils"
-	"github.com/pascallimeux/urmmongo/utils/log"
+	"github.com/pascallimeux/urmmongo2/server/model"
+	"github.com/pascallimeux/urmmongo2/utils"
+	"github.com/pascallimeux/urmmongo2/utils/log"
 	"gopkg.in/mgo.v2"
 	"io/ioutil"
 	"net/http"
@@ -36,13 +35,13 @@ func TestMain(m *testing.M) {
 }
 
 var applicationJSON string = "application/json"
-var AppContext api.AppContext
+var AppCTX AppContext
 var httpServerTest *httptest.Server
 var logfile *os.File
 var MOCK_HR string
 
 //const MOCK_HR = `[{\"subject\": {\"reference\": \"7566939136933237222\", \"display\": \"personurm\"}, \"status\": \"final\", \"id\": \"glucose-meter\", \"Structure\": \"JSON\", \"component\": [{\"valueQuantity\": {\"system\": \"urn:std:iso:11073:10101\", \"code\": \"268192\", \"unit\": \"Cel\", \"value\": \"36.5\"}, \"code\": {\"coding\": [{\"system\": \"urn:std:iso:11073:10101\", \"code\": \"150364\", \"display\": \"MDC_TEMP_BODY\"}]}, \"valueDateTime\": \"2016-12-09T08:41:24+02:00\"}], \"issued\": \"2016-12-09T08:41:24+02:00\", \"identifier\": [{\"system\": \"Postman\", \"value\": \"227\"}], \"code\": {\"coding\": [{\"system\": \"urn:std:iso:11073:10101\", \"code\": \"528392\", \"display\": \"MDC_DEV_SPEC_PROFILE_TEMP\"}]}, \"resourceType\": \"Observation\", \"device\": {\"manufacturer\": \"xxxx \", \"model\": \"xxxxx\", \"udi\": \"xxxx\", \"version\": \"xxxx\"}}]`
-const MOCKFILENAME = "./datafiles/Fhir_CAR_V1.json"
+const MOCKFILENAME = "../tests/datafiles/Fhir_CAR_V1.json"
 const MOCK_DS = "{\"name\":\"HD_pascal\",\"description\":\"Health data for login: Pascal\",\"serial\":\"None\"}"
 const MOCK_ST = "{\"name\":\"ST_heart Rate\",\"description\":\"Stream for user Pascal and type: Heart rate\"}"
 const MOCK_BAD_ST = ""
@@ -64,11 +63,8 @@ func DropDB(session *mgo.Session, dbname string) {
 }
 
 func setup(isDropDB bool) {
-	// Read configuration file
-	configuration, err := utils.Readconf("../config/configtest.json")
-	if err != nil {
-		log.Fatal(log.Here(), "error:", err.Error())
-	}
+
+	configuration := utils.Configuration{Logger: "Trace", LogFileName: "/tmp/test.log", MongoUrl: "mongodb://localhost", MongoDbName: "MHT2015DBTEST", HttpHostUrl: "localhost:8088"}
 
 	// Init logger
 	logfile = log.Init_log(configuration.LogFileName, configuration.Logger)
@@ -85,13 +81,13 @@ func setup(isDropDB bool) {
 	}
 
 	// Init application context
-	AppContext = api.AppContext{}
-	AppContext.Mongo.Session = mongoSession
-	AppContext.Mongo.MongoDbName = configuration.MongoDbName
-	AppContext.Mongo.CreateIndex()
+	AppCTX = AppContext{}
+	AppCTX.Mongo.Session = mongoSession
+	AppCTX.Mongo.MongoDbName = configuration.MongoDbName
+	AppCTX.Mongo.CreateIndex()
 
 	// Init http server
-	router := AppContext.CreateRoutes()
+	router := AppCTX.CreateRoutes()
 	httpServerTest = httptest.NewServer(router)
 
 	// Read mack file for value
@@ -101,7 +97,7 @@ func setup(isDropDB bool) {
 func shutdown() {
 	defer logfile.Close()
 	defer httpServerTest.Close()
-	defer AppContext.Mongo.Session.Close()
+	defer AppCTX.Mongo.Session.Close()
 }
 
 func build_payload(value, datestr string) string {

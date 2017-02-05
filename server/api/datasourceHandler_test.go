@@ -11,11 +11,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package tests
+package api
 
 import (
 	"encoding/json"
-	"github.com/pascallimeux/urmmongo/server/model"
+	"github.com/pascallimeux/urmmongo2/server/model"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -28,7 +28,7 @@ func TestDatasourceCreateAndGetNominal(t *testing.T) {
 }
 
 func TestDatasourceGetAllNominal(t *testing.T) {
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	for i := 0; i < 10; i++ {
 		testCreateDS(MOCK_DS, t)
 	}

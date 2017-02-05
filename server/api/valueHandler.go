@@ -16,9 +16,8 @@ package api
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/pascallimeux/urmmongo/server/model"
-	//"github.com/pascallimeux/urmmongo/utils"
-	"github.com/pascallimeux/urmmongo/utils/log"
+	"github.com/pascallimeux/urmmongo2/server/model"
+	"github.com/pascallimeux/urmmongo2/utils/log"
 	"io/ioutil"
 	"net/http"
 )

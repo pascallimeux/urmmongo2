@@ -1,10 +1,8 @@
 #!/bin/bash
+echo "Start urmmongo2"
 
-USER="pascal"
-URMMONGOPATH="/data/urmmongo/dist"
-export URMMONGOCONFIGFILE="/data/urmmongo/dist/config.json"
-LOGDIR="$URMMONGOPATH/logs"
-export URMMONGOLOGFILE="$LOGDIR/urmmongo.log"
+# mandatory to systemctl service
+. /data/urmmongo2/dist/env.sh
 
 if [ ! -d "$LOGDIR" ]; then
 	echo "Create log directory"
@@ -12,6 +10,6 @@ if [ ! -d "$LOGDIR" ]; then
 fi
     sudo chown -R $USER $LOGDIR
 
-echo "Urmmongo process started."
+echo "Urmmongo2 process started."
 CMD="$URMMONGOPATH/urmmongo"
 eval "$CMD"

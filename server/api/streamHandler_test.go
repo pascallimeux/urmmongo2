@@ -11,11 +11,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package tests
+package api
 
 import (
 	"encoding/json"
-	"github.com/pascallimeux/urmmongo/server/model"
+	"github.com/pascallimeux/urmmongo2/server/model"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -29,7 +29,7 @@ func TestStreamCreateAndGetNominal(t *testing.T) {
 }
 
 func TestStreamCreateBadDsID(t *testing.T) {
-	AppContext.Mongo.Control = true
+	AppCTX.Mongo.Control = true
 	postData := strings.NewReader(MOCK_ST)
 	res, err := http.Post(httpServerTest.URL+"/datasources/"+"584bd567759b1421262bd9a0"+"/streams/", applicationJSON, postData)
 	bytes, err := ioutil.ReadAll(res.Body)
@@ -46,7 +46,7 @@ func TestStreamCreateBadDsID(t *testing.T) {
 }
 
 func TestStreamCreateNewDsID(t *testing.T) {
-	AppContext.Mongo.Control = false
+	AppCTX.Mongo.Control = false
 	datasourceId := "111111111111111111111111"
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	testGetDS(datasourceId, t)
@@ -54,7 +54,7 @@ func TestStreamCreateNewDsID(t *testing.T) {
 }
 
 func TestStreamCreateBadValues(t *testing.T) {
-	AppContext.Mongo.Control = true
+	AppCTX.Mongo.Control = true
 	datasourceId := testCreateDS(MOCK_DS, t)
 	postData := strings.NewReader(MOCK_BAD_ST)
 	res, err := http.Post(httpServerTest.URL+"/datasources/"+datasourceId+"/streams/", applicationJSON, postData)
@@ -72,7 +72,7 @@ func TestStreamCreateBadValues(t *testing.T) {
 }
 
 func TestStreamGetAllNominal(t *testing.T) {
-	DropDB(AppContext.Mongo.Session, AppContext.Mongo.MongoDbName)
+	DropDB(AppCTX.Mongo.Session, AppCTX.Mongo.MongoDbName)
 	datasourceId := testCreateDS(MOCK_DS, t)
 	for i := 0; i < 10; i++ {
 		testCreateST(datasourceId, MOCK_ST, t)
@@ -84,7 +84,7 @@ func TestStreamGetAllNominal(t *testing.T) {
 }
 
 func TestStreamGetBadStID(t *testing.T) {
-	AppContext.Mongo.Control = true
+	AppCTX.Mongo.Control = true
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := "584bd567759b1421262bd9a0"
 	res, err := http.Get(httpServerTest.URL + "/datasources/" + datasourceId + "/streams/" + streamId)
@@ -101,7 +101,7 @@ func TestStreamGetBadStID(t *testing.T) {
 }
 
 func TestStreamGetBadDsID(t *testing.T) {
-	AppContext.Mongo.Control = true
+	AppCTX.Mongo.Control = true
 	datasourceId := testCreateDS(MOCK_DS, t)
 	streamId := testCreateST(datasourceId, MOCK_ST, t)
 	datasourceId = "584bd567759b1421462bf9a0"
